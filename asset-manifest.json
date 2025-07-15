@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/janabi-protfolio/static/css/main.2f6ea6c8.chunk.css",
+    "main.js": "/janabi-protfolio/static/js/main.651d13e2.chunk.js",
+    "main.js.map": "/janabi-protfolio/static/js/main.651d13e2.chunk.js.map",
+    "runtime-main.js": "/janabi-protfolio/static/js/runtime-main.6eb76289.js",
+    "runtime-main.js.map": "/janabi-protfolio/static/js/runtime-main.6eb76289.js.map",
+    "static/js/2.d2afc40e.chunk.js": "/janabi-protfolio/static/js/2.d2afc40e.chunk.js",
+    "static/js/2.d2afc40e.chunk.js.map": "/janabi-protfolio/static/js/2.d2afc40e.chunk.js.map",
+    "static/js/3.31229d98.chunk.js": "/janabi-protfolio/static/js/3.31229d98.chunk.js",
+    "static/js/3.31229d98.chunk.js.map": "/janabi-protfolio/static/js/3.31229d98.chunk.js.map",
+    "index.html": "/janabi-protfolio/index.html",
+    "static/css/main.2f6ea6c8.chunk.css.map": "/janabi-protfolio/static/css/main.2f6ea6c8.chunk.css.map",
+    "static/js/2.d2afc40e.chunk.js.LICENSE.txt": "/janabi-protfolio/static/js/2.d2afc40e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6eb76289.js",
+    "static/js/2.d2afc40e.chunk.js",
+    "static/css/main.2f6ea6c8.chunk.css",
+    "static/js/main.651d13e2.chunk.js"
+  ]
+}
