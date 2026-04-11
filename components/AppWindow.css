@@ -2,13 +2,22 @@
 .app-window {
   --app-window-menubar: 48px;
   --app-window-dock: calc(96px + env(safe-area-inset-bottom, 0px));
+  --app-window-max-h: calc(
+    100vh - var(--app-window-menubar) - var(--app-window-dock) - 16px
+  );
   position: fixed;
   display: flex;
   flex-direction: column;
   min-width: 280px;
   min-height: 200px;
+  /* innerWidth-friendly cap; 100dvw/100dvh avoid overshooting the visible viewport on mobile */
   max-width: calc(100vw - 16px);
-  max-height: calc(100vh - var(--app-window-menubar) - var(--app-window-dock) - 16px);
+  max-width: min(calc(100vw - 16px), calc(100dvw - 16px));
+  max-height: var(--app-window-max-h);
+  max-height: min(
+    var(--app-window-max-h),
+    calc(100dvh - var(--app-window-menubar) - var(--app-window-dock) - 16px)
+  );
   border-radius: 10px;
   background: rgba(28, 30, 38, 0.96);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -125,6 +134,19 @@
   color: #e8eaef;
 }
 
+.app-window__body:has(> .browser-app) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+.app-window__body > .browser-app {
+  flex: 1;
+  min-height: 0;
+  padding: 12px 14px 14px;
+}
+
 .app-window__body a {
   color: #7eb8ff;
 }
@@ -144,4 +166,9 @@
   margin-top: 12px;
   font-size: 12px;
   opacity: 0.78;
+}
+
+.app-window__body .dock-app-placeholder {
+  margin: 0;
+  opacity: 0.88;
 }

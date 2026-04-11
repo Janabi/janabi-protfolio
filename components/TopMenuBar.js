@@ -5,14 +5,6 @@ import { useEffect, useState } from 'react';
 import { siteConfig } from '@/lib/site-config';
 import './TopMenuBar.css';
 
-const NAV = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/contact', label: 'Contact' },
-];
-
 function formatDateTime(date) {
   return new Intl.DateTimeFormat(undefined, {
     weekday: 'short',
@@ -52,17 +44,6 @@ export default function TopMenuBar() {
         </Link>
         <span className="top-menu-bar__system">· {platform}</span>
       </div>
-      <nav className="top-menu-bar__nav" aria-label="Site sections">
-        <ul className="top-menu-bar__nav-list">
-          {NAV.map(({ href, label }) => (
-            <li key={href}>
-              <Link href={href} className="top-menu-bar__nav-link">
-                {label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
       <time
         className="top-menu-bar__clock"
         dateTime={now ? now.toISOString() : undefined}

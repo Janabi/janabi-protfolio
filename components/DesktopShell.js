@@ -2,12 +2,92 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import AppWindow from '@/components/AppWindow';
-import MailApp from '@/components/apps/MailApp';
-import Dock, { getDockAppMeta } from '@/components/Dock';
+import DockAppContent from '@/components/apps/DockAppContent';
+import Dock, { DOCK_APPS, getDockAppMeta } from '@/components/Dock';
 import TopMenuBar from '@/components/TopMenuBar';
 import '@/app/shell.css';
 
-const MAIL_DEFAULT_SIZE = { width: 440, height: 380 };
+const APP_DEFAULT_SIZES = {
+  mail: { width: 440, height: 380 },
+  browser: { width: 900, height: 600 },
+  default: { width: 520, height: 400 },
+};
+
+/** Must stay in sync with .app-window chrome in AppWindow.css */
+const VIEWPORT_CHROME = {
+  menubar: 48,
+  dock: 96,
+  pad: 16,
+  minWidth: 280,
+  minHeight: 200,
+};
+
+function getAppLaunchSize(appId) {
+  return APP_DEFAULT_SIZES[appId] ?? APP_DEFAULT_SIZES.default;
+}
+
+/**
+ * Keeps window width/height within the visible viewport and position on-screen.
+ * Uses innerWidth/innerHeight so sizing matches the layout viewport (avoids 100vw scrollbar overflow).
+ */
+function fitWindowToViewport(vw, vh, x, y, width, height) {
+  const { menubar, dock, pad, minWidth, minHeight } = VIEWPORT_CHROME;
+  const maxW = vw - pad;
+  const maxH = vh - menubar - dock - pad;
+
+  let w = Math.min(width, maxW);
+  let h = Math.min(height, maxH);
+  w = Math.max(minWidth, w);
+  h = Math.max(minHeight, h);
+  w = Math.min(w, maxW);
+  h = Math.min(h, maxH);
+
+  const minX = pad / 2;
+  const minY = menubar;
+  const maxX = vw - w - pad / 2;
+  const maxY = vh - h - dock - pad / 2;
+
+  let nx = x;
+  let ny = y;
+  if (maxX >= minX) {
+    nx = Math.min(Math.max(minX, nx), maxX);
+  } else {
+    nx = minX;
+  }
+  if (maxY >= minY) {
+    ny = Math.min(Math.max(minY, ny), maxY);
+  } else {
+    ny = minY;
+  }
+
+  return {
+    x: Math.round(nx),
+    y: Math.round(ny),
+    width: Math.round(w),
+    height: Math.round(h),
+  };
+}
+
+function clampWindowPosition(vw, vh, x, y, width, height) {
+  const { menubar, dock, pad } = VIEWPORT_CHROME;
+  const minX = pad / 2;
+  const minY = menubar;
+  const maxX = vw - width - pad / 2;
+  const maxY = vh - height - dock - pad / 2;
+  let nx = x;
+  let ny = y;
+  if (maxX >= minX) {
+    nx = Math.min(Math.max(minX, nx), maxX);
+  } else {
+    nx = minX;
+  }
+  if (maxY >= minY) {
+    ny = Math.min(Math.max(minY, ny), maxY);
+  } else {
+    ny = minY;
+  }
+  return { x: Math.round(nx), y: Math.round(ny) };
+}
 
 export default function DesktopShell({ children }) {
   const [windows, setWindows] = useState([]);
@@ -59,14 +139,17 @@ export default function DesktopShell({ children }) {
           if (!r) {
             return { ...w, maximized: false, restoreBounds: null };
           }
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          const fitted = fitWindowToViewport(vw, vh, r.x, r.y, r.width, r.height);
           return {
             ...w,
             maximized: false,
             restoreBounds: null,
-            x: r.x,
-            y: r.y,
-            width: r.width,
-            height: r.height,
+            x: fitted.x,
+            y: fitted.y,
+            width: fitted.width,
+            height: fitted.height,
           };
         }
         return {
@@ -87,57 +170,74 @@ export default function DesktopShell({ children }) {
     setWindows((prev) =>
       prev.map((w) => {
         if (w.id !== id || w.maximized) return w;
-        return { ...w, x: w.x + dx, y: w.y + dy };
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const pos = clampWindowPosition(vw, vh, w.x + dx, w.y + dy, w.width, w.height);
+        return { ...w, x: pos.x, y: pos.y };
       })
     );
   }, []);
 
-  const openMailWindow = useCallback(() => {
-    const z = bumpZ();
-    setWindows((prev) => {
-      const existing = prev.find((w) => w.appId === 'mail');
-      const rest = prev.filter((w) => w.appId !== 'mail');
-      if (existing) {
+  const openOrFocusAppWindow = useCallback(
+    (appId) => {
+      const meta = DOCK_APPS.find((a) => !a.separator && a.id === appId);
+      if (!meta) return;
+
+      const z = bumpZ();
+      setWindows((prev) => {
+        const existing = prev.find((w) => w.appId === appId);
+        const rest = prev.filter((w) => w.appId !== appId);
+        if (existing) {
+          return [
+            ...rest,
+            {
+              ...existing,
+              minimized: false,
+              zIndex: z,
+            },
+          ];
+        }
+        const { width: reqW, height: reqH } = getAppLaunchSize(appId);
+        const vw = typeof window !== 'undefined' ? window.innerWidth : 800;
+        const vh = typeof window !== 'undefined' ? window.innerHeight : 600;
+        const openVisible = rest.filter((w) => !w.minimized).length;
+        const stagger = (openVisible % 6) * 26;
+        const x0 = Math.max(24, Math.round((vw - reqW) / 2 + stagger));
+        const y0 = Math.max(56, Math.round((vh - reqH) / 2 - 24 + stagger));
+        const { x, y, width, height } = fitWindowToViewport(
+          vw,
+          vh,
+          x0,
+          y0,
+          reqW,
+          reqH
+        );
         return [
           ...rest,
           {
-            ...existing,
+            id: `win-${appId}`,
+            appId,
+            title: meta.label,
             minimized: false,
+            maximized: false,
             zIndex: z,
+            x,
+            y,
+            width,
+            height,
+            restoreBounds: null,
           },
         ];
-      }
-      const { width, height } = MAIL_DEFAULT_SIZE;
-      const vw = typeof window !== 'undefined' ? window.innerWidth : 800;
-      const vh = typeof window !== 'undefined' ? window.innerHeight : 600;
-      const x = Math.max(24, Math.round((vw - width) / 2));
-      const y = Math.max(56, Math.round((vh - height) / 2 - 24));
-      return [
-        ...rest,
-        {
-          id: 'win-mail',
-          appId: 'mail',
-          title: 'Mail',
-          minimized: false,
-          maximized: false,
-          zIndex: z,
-          x,
-          y,
-          width,
-          height,
-          restoreBounds: null,
-        },
-      ];
-    });
-  }, [bumpZ]);
+      });
+    },
+    [bumpZ]
+  );
 
   const handleAppLaunch = useCallback(
     (appId) => {
-      if (appId === 'mail') {
-        openMailWindow();
-      }
+      openOrFocusAppWindow(appId);
     },
-    [openMailWindow]
+    [openOrFocusAppWindow]
   );
 
   const minimizedWindows = windows
@@ -184,7 +284,7 @@ export default function DesktopShell({ children }) {
             onActivate={() => bringToFront(w.id)}
             onDragDelta={(dx, dy) => dragDelta(w.id, dx, dy)}
           >
-            {w.appId === 'mail' ? <MailApp /> : null}
+            <DockAppContent appId={w.appId} />
           </AppWindow>
         ))}
       </div>

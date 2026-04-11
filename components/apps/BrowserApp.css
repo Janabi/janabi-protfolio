@@ -1,0 +1,149 @@
+.browser-app {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  max-width: 100%;
+}
+
+.browser-app__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.browser-app__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.browser-app__preset {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e8eaef;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.browser-app__preset:hover,
+.browser-app__preset:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.browser-app__preset:focus-visible {
+  outline: 2px solid rgba(126, 184, 255, 0.55);
+  outline-offset: 2px;
+}
+
+.browser-app__url-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.browser-app__url-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.browser-app__url-input {
+  flex: 1 1 160px;
+  min-width: 0;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.35);
+  color: #e8eaef;
+  font-size: 13px;
+  font-family: ui-monospace, monospace;
+}
+
+.browser-app__url-input::placeholder {
+  color: rgba(232, 234, 239, 0.35);
+}
+
+.browser-app__url-input:focus-visible {
+  outline: 2px solid rgba(126, 184, 255, 0.45);
+  outline-offset: 1px;
+  border-color: rgba(126, 184, 255, 0.35);
+}
+
+.browser-app__action {
+  padding: 7px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  color: #e8eaef;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.browser-app__action:hover,
+.browser-app__action:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.browser-app__action:focus-visible {
+  outline: 2px solid rgba(126, 184, 255, 0.55);
+  outline-offset: 2px;
+}
+
+.browser-app__action--link {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.browser-app__error {
+  margin: 0;
+  font-size: 12px;
+  color: #ff8a8a;
+}
+
+.browser-app__hint {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.4;
+  opacity: 0.72;
+  flex-shrink: 0;
+}
+
+.browser-app__frame-wrap {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.browser-app__frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}

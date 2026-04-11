@@ -53,57 +53,9 @@
   text-overflow: ellipsis;
 }
 
-.top-menu-bar__nav {
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: center;
-  min-width: 0;
-}
-
-.top-menu-bar__nav-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 4px 12px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.top-menu-bar__nav-link {
-  color: rgba(255, 255, 255, 0.75);
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 2px 4px;
-  border-radius: 4px;
-  transition: color 0.15s ease, background 0.15s ease;
-}
-
-.top-menu-bar__nav-link:hover,
-.top-menu-bar__nav-link:focus-visible {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
-  text-decoration: none;
-  outline: none;
-}
-
 .top-menu-bar__clock {
   flex-shrink: 0;
   margin-left: auto;
   font-variant-numeric: tabular-nums;
   color: rgba(255, 255, 255, 0.9);
-}
-
-@media (max-width: 720px) {
-  .top-menu-bar__nav {
-    order: 3;
-    flex-basis: 100%;
-    justify-content: flex-start;
-  }
-
-  .top-menu-bar__clock {
-    margin-left: 0;
-  }
 }
