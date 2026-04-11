@@ -1,0 +1,23 @@
+.desktop-shell {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #1a1d29 0%, #252a3a 45%, #1e2230 100%);
+  color: #e8eaef;
+}
+
+.desktop-main {
+  min-height: 100vh;
+  padding-top: 48px;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+}
+
+.desktop-windows {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  pointer-events: none;
+}
+
+.desktop-windows .app-window {
+  pointer-events: auto;
+}

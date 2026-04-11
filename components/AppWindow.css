@@ -1,0 +1,147 @@
+/* Align with .desktop-main chrome in shell.css */
+.app-window {
+  --app-window-menubar: 48px;
+  --app-window-dock: calc(96px + env(safe-area-inset-bottom, 0px));
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  min-width: 280px;
+  min-height: 200px;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - var(--app-window-menubar) - var(--app-window-dock) - 16px);
+  border-radius: 10px;
+  background: rgba(28, 30, 38, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 18px 48px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 0, 0, 0.2);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.app-window--maximized {
+  top: var(--app-window-menubar) !important;
+  right: 0 !important;
+  bottom: var(--app-window-dock) !important;
+  left: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+  touch-action: auto;
+}
+
+.app-window__titlebar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  padding: 10px 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  user-select: none;
+}
+
+.app-window--maximized .app-window__titlebar {
+  padding-top: max(10px, env(safe-area-inset-top, 0px));
+}
+
+.app-window__traffic {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-window__traffic-btn {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease;
+}
+
+.app-window__traffic-btn:hover,
+.app-window__traffic-btn:focus-visible {
+  transform: scale(1.08);
+  filter: brightness(1.12);
+}
+
+.app-window__traffic-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.app-window__traffic-btn--close {
+  background: #ff5f57;
+}
+
+.app-window__traffic-btn--minimize {
+  background: #febc2e;
+}
+
+.app-window__traffic-btn--zoom {
+  background: #28c840;
+}
+
+.app-window__drag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  margin: -4px 0;
+  margin-left: -4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: grab;
+  color: rgba(232, 234, 239, 0.88);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.app-window__drag:active {
+  cursor: grabbing;
+}
+
+.app-window--maximized .app-window__drag {
+  cursor: default;
+}
+
+.app-window__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 14px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #e8eaef;
+}
+
+.app-window__body a {
+  color: #7eb8ff;
+}
+
+.app-window__body a:hover {
+  text-decoration: underline;
+}
+
+.app-window__body h2 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 14px 0 6px;
+  color: rgba(232, 234, 239, 0.95);
+}
+
+.app-window__body .mail-app-hint {
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.78;
+}

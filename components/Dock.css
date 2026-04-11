@@ -1,0 +1,102 @@
+.dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(12px, env(safe-area-inset-left, 0px));
+  padding-right: max(12px, env(safe-area-inset-right, 0px));
+  pointer-events: none;
+}
+
+.dock__panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 14px;
+  pointer-events: auto;
+  border-radius: 18px;
+  background: rgba(30, 30, 32, 0.82);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dock__main-apps {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dock__minimized {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 4px;
+  margin-left: 2px;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dock__app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.dock__app--minimized {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  opacity: 0.92;
+  background: rgba(120, 160, 255, 0.12);
+}
+
+.dock__app--minimized:hover,
+.dock__app--minimized:focus-visible {
+  background: rgba(120, 160, 255, 0.22);
+}
+
+.dock__app:hover,
+.dock__app:focus-visible {
+  transform: translateY(-6px) scale(1.1);
+  background: rgba(255, 255, 255, 0.12);
+  outline: none;
+}
+
+.dock__app:focus-visible {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.dock__icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.dock__app--minimized .dock__icon {
+  font-size: 24px;
+}
+
+.dock__separator {
+  align-self: stretch;
+  width: 1px;
+  min-height: 36px;
+  margin: 0 4px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
