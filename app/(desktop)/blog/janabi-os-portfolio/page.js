@@ -23,8 +23,7 @@ export default function JanabiOsCaseStudyPage() {
       <p className="lead" itemProp="description">
         A concise build log for this site: moving from a client-only React bundle
         to <strong>Next.js</strong> with static HTML per route, structured data,
-        and hosting on <strong>GitHub Pages</strong> under{' '}
-        <code>/janabi-protfolio</code>.
+        and hosting on <strong>GitHub Pages</strong> at the site root.
       </p>
 
       <h2>Goals</h2>
@@ -41,8 +40,8 @@ export default function JanabiOsCaseStudyPage() {
       <p>
         The UI keeps a playful desktop metaphor (menu bar and dock) while content
         pages expose real headings and copy for indexing. Static export avoids a
-        Node server on GitHub Pages; <code>basePath</code> matches the project
-        site path.
+        Node server on GitHub Pages; no <code>basePath</code> so routes live at{' '}
+        <code>/</code>.
       </p>
 
       <h2>What you should customize next</h2>

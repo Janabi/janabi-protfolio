@@ -10,13 +10,11 @@ describe('absoluteUrl', () => {
     jest.resetModules();
   });
 
-  it('joins base and path for GitHub Pages-style base path', () => {
+  it('joins base and path for site root deployment', () => {
     delete process.env.NEXT_PUBLIC_SITE_URL;
     const { absoluteUrl: abs } = require('../lib/urls');
-    expect(abs('/about')).toBe(
-      'https://janabi.github.io/janabi-protfolio/about'
-    );
-    expect(abs('/')).toBe('https://janabi.github.io/janabi-protfolio');
+    expect(abs('/about')).toBe('https://janabi.github.io/about');
+    expect(abs('/')).toBe('https://janabi.github.io');
   });
 
   it('respects NEXT_PUBLIC_SITE_URL when set', () => {

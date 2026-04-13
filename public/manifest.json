@@ -2,8 +2,8 @@
   "short_name": "Janabi OS",
   "name": "Abdulrahman Al-Janabi — Portfolio",
   "icons": [],
-  "start_url": "/janabi-protfolio/",
-  "scope": "/janabi-protfolio/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#1a1d29",
   "background_color": "#1a1d29"

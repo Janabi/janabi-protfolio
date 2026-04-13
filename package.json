@@ -2,7 +2,7 @@
   "name": "janabi-protfolio",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://janabi.github.io/janabi-protfolio",
+  "homepage": "https://janabi.github.io",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
