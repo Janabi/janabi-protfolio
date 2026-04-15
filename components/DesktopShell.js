@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import AppWindow from '@/components/AppWindow';
 import DockAppContent from '@/components/apps/DockAppContent';
 import Dock, { DOCK_APPS, getDockAppMeta } from '@/components/Dock';
@@ -247,6 +247,11 @@ export default function DesktopShell({ children }) {
       return { id: w.id, appId: w.appId, label: meta.label, icon: meta.icon };
     });
 
+  const openDockAppIds = useMemo(
+    () => [...new Set(windows.map((w) => w.appId))],
+    [windows]
+  );
+
   const visibleWindows = windows.filter((w) => !w.minimized);
 
   useEffect(() => {
@@ -291,6 +296,7 @@ export default function DesktopShell({ children }) {
       <div className="desktop-main">{children}</div>
       <Dock
         onAppLaunch={handleAppLaunch}
+        openDockAppIds={openDockAppIds}
         minimizedWindows={minimizedWindows}
         onRestoreMinimized={restoreMinimized}
       />

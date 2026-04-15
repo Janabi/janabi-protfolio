@@ -23,28 +23,44 @@ const SEPARATOR_INDEX = DOCK_APPS.findIndex((item) => item.separator);
 const MAIN_APPS = DOCK_APPS.slice(0, SEPARATOR_INDEX);
 const TAIL_APPS = DOCK_APPS.slice(SEPARATOR_INDEX);
 
+function DockAppButton({ item, onAppLaunch, isOpen }) {
+  return (
+    <button
+      type="button"
+      className="dock__app"
+      aria-label={item.label}
+      title={item.label}
+      onClick={() => onAppLaunch?.(item.id)}
+    >
+      <span className="dock__icon" aria-hidden="true">
+        {item.icon}
+      </span>
+      {isOpen ? (
+        <span className="dock__running-dot" aria-hidden="true" />
+      ) : null}
+    </button>
+  );
+}
+
 export default function Dock({
   onAppLaunch,
+  openDockAppIds = [],
   minimizedWindows = [],
   onRestoreMinimized,
 }) {
+  const openSet = new Set(openDockAppIds);
+
   return (
     <nav className="dock" aria-label="Dock">
       <div className="dock__panel">
         <div className="dock__main-apps">
           {MAIN_APPS.map((item) => (
-            <button
+            <DockAppButton
               key={item.id}
-              type="button"
-              className="dock__app"
-              aria-label={item.label}
-              title={item.label}
-              onClick={() => onAppLaunch?.(item.id)}
-            >
-              <span className="dock__icon" aria-hidden="true">
-                {item.icon}
-              </span>
-            </button>
+              item={item}
+              onAppLaunch={onAppLaunch}
+              isOpen={openSet.has(item.id)}
+            />
           ))}
         </div>
 
@@ -80,18 +96,12 @@ export default function Dock({
               aria-hidden="true"
             />
           ) : (
-            <button
+            <DockAppButton
               key={item.id}
-              type="button"
-              className="dock__app"
-              aria-label={item.label}
-              title={item.label}
-              onClick={() => onAppLaunch?.(item.id)}
-            >
-              <span className="dock__icon" aria-hidden="true">
-                {item.icon}
-              </span>
-            </button>
+              item={item}
+              onAppLaunch={onAppLaunch}
+              isOpen={openSet.has(item.id)}
+            />
           )
         )}
       </div>
